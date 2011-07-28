@@ -1,0 +1,180 @@
+package GraphicalUserInterface;
+
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+
+import javax.swing.*;
+import Monopoly.Player;
+/**
+ * Class to represent the games Side PAnel
+ * @author Michael Treacher
+ *
+ */
+public class SidePanel extends JPanel {
+	
+	private JLabel playersTurn;
+	private JLabel selectProperty;
+	private JScrollPane propertiesPane;
+	private JPanel properties;
+	private JPanel buttons;
+	private JPanel playerStatus;
+	private JLabel playerStats;
+	
+	/**
+	 * Constructs the SidePanel for the monopoly board
+	 */
+	public SidePanel(){
+		setLayout(null);
+		setupPlayerLabel(null);
+		setupSelectPropertyLabel();
+		setupPropertyScrollPanel();
+		setupButtons();
+		setupPlayerStatsLabel();
+		setupPlayerStatus();
+		setupListeners();
+	}
+	/**
+	 * Sets up the buttons for the panel
+	 */
+	private void setupButtons(){
+		buttons = new JPanel();
+		buttons.setLayout(new FlowLayout());
+		JButton viewYourPropertiesButton = new JButton("View Your Properties");
+		viewYourPropertiesButton.addActionListener(
+				new ActionListener(){
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+					// view your properties;
+					}
+					
+				}
+		);
+		JButton viewOtherPropertiesButton = new JButton("View Other's Properties");
+		viewOtherPropertiesButton.addActionListener(
+				new ActionListener(){
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+					// view Other properties;
+					}
+					
+				}
+		);
+		buttons.add(viewYourPropertiesButton);
+		buttons.add(viewOtherPropertiesButton);
+		add(buttons);
+	}
+	/**
+	 * Gets the property grid
+	 * @return  PropertyGrid
+	 */
+	public JPanel getPropertyGrid(){
+		return properties;
+	}
+	/**
+	 * Gets the player grid
+	 * @return  PlayerGrid
+	 */
+	public JPanel getPlayerGrid(){
+		return playerStatus;
+	}
+	/**
+	 * Sets up the player status panel
+	 */
+	private void setupPlayerStatus(){
+		playerStatus = new JPanel();
+		playerStatus.setLayout(new GridLayout(12,3));
+		playerStatus.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		add(playerStatus);
+	}
+	/**
+	 * Sets up the property scroll pane
+	 */
+	private void setupPropertyScrollPanel(){
+		properties = new JPanel();
+		propertiesPane = new JScrollPane(properties);
+		properties.setLayout(new GridLayout(12,3));
+		propertiesPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		propertiesPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // for scrolling through properties
+		add(propertiesPane);
+	}
+	/**
+	 * Sets up the player name label
+	 * @param currentPlayer the current player
+	 */
+	public void setupPlayerLabel(Player currentPlayer){
+		if(currentPlayer == null) // null case for when you start the game and there is no players.. Initial state
+			playersTurn = new JLabel("",JLabel.CENTER);
+		else 
+			playersTurn = new JLabel(currentPlayer.getPiece().toString() + "'s Turn",JLabel.CENTER); // changes when its a new players turn
+		
+		playersTurn.setFont(new Font("sansserif",Font.BOLD,20));
+		playersTurn.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		add(playersTurn);
+	}
+	/**
+	 * Sets up the select proprty label
+	 */
+	private void setupSelectPropertyLabel(){
+		selectProperty = new JLabel("Select Properties:");
+		selectProperty.setFont(new Font("sansserif",Font.BOLD,17));
+		selectProperty.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		add(selectProperty);
+	}
+	/**
+	 * Sets up the player stats label
+	 */
+	private void setupPlayerStatsLabel(){
+		playerStats = new JLabel("Players:");
+		playerStats.setFont(new Font("sansserif",Font.BOLD,17));
+		playerStats.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		add(playerStats);
+	}
+	/**
+	 * Creates the listeners for the Side Panel
+	 */
+	private void setupListeners(){
+			 // add component listener. For resizing
+			  addComponentListener(
+						new ComponentListener(){
+							@Override
+							public void componentResized(ComponentEvent e) {
+								 int panelSize = SidePanel.this.getHeight();
+								 final int BIG_PANEL_SIZE = 5;
+								 final int PANEL_DIVISOR = 15;
+								playersTurn.setBounds(0,0,SidePanel.this.getWidth(),panelSize/PANEL_DIVISOR);
+								selectProperty.setBounds(0, playersTurn.getY() + panelSize/PANEL_DIVISOR, SidePanel.this.getWidth(), panelSize/PANEL_DIVISOR);
+								propertiesPane.setBounds(0,selectProperty.getY() + panelSize/PANEL_DIVISOR,SidePanel.this.getWidth(),((panelSize/PANEL_DIVISOR)*BIG_PANEL_SIZE));
+<<<<<<< .mine
+								buttons.setBounds(0,propertiesPane.getY() + (((panelSize/PANEL_DIVISOR)*BIG_PANEL_SIZE)),SidePanel.this.getWidth(),panelSize/PANEL_DIVISOR+PANEL_DIVISOR + 5);
+								playerStats.setBounds(0, buttons.getY() + panelSize/PANEL_DIVISOR+PANEL_DIVISOR + 5,SidePanel.this.getWidth(),panelSize/PANEL_DIVISOR );
+								playerStatus.setBounds(0, playerStats.getY() + panelSize/PANEL_DIVISOR,SidePanel.this.getWidth(),panelSize-(playerStats.getY() + panelSize/PANEL_DIVISOR));
+=======
+								buttons.setBounds(0,propertiesPane.getY() + (((panelSize/PANEL_DIVISOR)*BIG_PANEL_SIZE)),SidePanel.this.getWidth(),panelSize/PANEL_DIVISOR+PANEL_DIVISOR + 5);
+								playerStats.setBounds(0, buttons.getY() + panelSize/PANEL_DIVISOR+PANEL_DIVISOR + 5,SidePanel.this.getWidth(),panelSize/PANEL_DIVISOR );
+								playerStatus.setBounds(0, playerStats.getY() + panelSize/PANEL_DIVISOR,SidePanel.this.getWidth(),panelSize-(buttons.getY() + panelSize/PANEL_DIVISOR+PANEL_DIVISOR));
+>>>>>>> .r19
+								validate();
+							}
+							@Override
+							public void componentHidden(ComponentEvent e) {/* not implemented*/}
+							@Override
+							public void componentMoved(ComponentEvent e) {/* not implemented*/}
+							@Override
+							public void componentShown(ComponentEvent e) {/* not implemented*/}
+						} 
+					 );
+	}
+	
+	
+	
+	
+
+}
